@@ -70,7 +70,7 @@ pipeline.png
 
 **PL side (KR260)**
 
-- The UDP receiver strips the Ethernet/IP/UDP headers, validates the checksums, and forwards the UDP payload downstream.
+- The UDP receiver strips the IP/UDP headers, validates the checksums, and forwards the UDP payload downstream.
 - The depacking stage parses the custom header, groups fragments by sensor and frame ID, and writes them into a per-sensor DDR slot. Once a frame's fragments are all in, it emits a completion descriptor.
 - For LiDAR: the descriptor is used to parse the frame metadata, then the DPCM decoder reconstructs every point.
 - For camera: the descriptor is used to parse the frame metadata and stream out both the descriptor and the raw H.264 bitstream from DDR. Decoding itself isn't done here (H.264 decoding is left to PS software or a separate PL decoder).
