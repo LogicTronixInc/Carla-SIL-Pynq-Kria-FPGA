@@ -1,3 +1,4 @@
+
 # Carla-SIL-Pynq-Kria-FPGA
 
 Software-in-loop testing of the CARLA ADAS simulator with PYNQ running on a Kria KR260.
@@ -153,6 +154,8 @@ Only a single camera is streamed in this setup, though the pipeline itself suppo
 > **Note:** Keep the socket send buffer (CARLA PC) and receive buffer (KR260) large enough based on the camera resolution and LiDAR point count.
 
 **Demo video:** [carla_to_pynq_demo.mp4](carla_to_pynq_demo.mp4)
+
+https://github.com/user-attachments/assets/c0cf1f94-aff2-479f-8e5d-3b3d8f78b9d6
 
 ## Packet format
 
