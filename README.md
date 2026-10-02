@@ -134,6 +134,26 @@ python3 live_stream_tb.py \
     --sensor both
 ```
 
+### CARLA-driven live testbench
+
+`PYNQ/carla_to_pynq_live.ipynb` streams LiDAR and camera frames from a running CARLA simulation into the FPGA pipeline in real time.
+
+* `python-scripts/network_sender_wrapper.py` — packs CARLA camera and LiDAR frames into IP/UDP packets and sends them to the KR260, using separate worker threads per sensor so the CARLA simulation loop isn't slowed down by network I/O.
+* `python-scripts/testbench_input/carla-test-waymostyle-gpt-916crla-v1_3-teslam3.py` — a CARLA simulation script
+
+Start CARLA itself, then run simulation script on the CARLA PC pointed at the KR260's IP, then run `carla_to_pynq_live.ipynb` on the board.
+
+In CARLA simulation script change dest_ip and dest_port to that of the board.
+```python
+sender = NetworkSender(dest_ip = "192.168.1.14", dest_port = 9000) #KR260 IP/Port
+```
+
+Only a single camera is streamed in this setup, though the pipeline itself supports multiple sensors. H.264 decoding is done on the PS side which slows down the live streaming.
+
+> **Note:** Keep the socket send buffer (CARLA PC) and receive buffer (KR260) large enough based on the camera resolution and LiDAR point count.
+
+**Demo video:** [carla_to_pynq_demo.mp4](carla_to_pynq_demo.mp4)
+
 ## Packet format
 
 Each UDP payload is one fragment of a sensor frame. Packing on the host side is implemented across three modules: `layer2_transport.py` (fragment header), `layer1_lidar.py` (LiDAR frame payload), and `layer1_camera.py` (camera frame payload).
